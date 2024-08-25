@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+
+</head>
+
+<body>
+    <button id="request">request</button>
+    <button id="cancel">取消请求</button>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+
+        const cancelToken = axios.CancelToken;
+        const source = cancelToken.source();
+
+        
+        async function request() {
+            console.log(111);
+            await new Promise((resolve) => {
+                setTimeout(() => {
+                    resolve("")
+                }, 5000)
+            });
+            axios.post(
+                "/",
+                {
+                    name: "new name",
+                },
+                {
+                    cancelToken: source.token,
+                }
+            );
+        }
+
+        function handleCancel() {
+            source.cancel("Operation canceled by the user.");
+        }
+        document.querySelector("#request").addEventListener('click', request)
+        document.querySelector("#cancel").addEventListener('click', handleCancel )
+    </script>
+</body>
+
+</html>
